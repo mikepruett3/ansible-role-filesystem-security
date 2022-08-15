@@ -29,6 +29,10 @@
     mount_options: "{{ mount_options | replace('defaults','') }}"
   when: "'defaults' in mount_options"
 
+- name: "Remove beginning comma from mount_options var"
+  ansible.builtin.set_fact:
+    mount_options: "{{ mount_options | replace(',','',1) }}"
+
 - name: "Add specified mount option {{ option }} to {{ mount }}"
   ansible.posix.mount:
     path: "{{ mount }}"

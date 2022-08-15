@@ -39,3 +39,18 @@
       regexp: ^[\s]*usb-storage.*\b.*$
       line: "install usb-storage /bin/true"
 
+- name: "Collect mount information about /dev/shm"
+  ansible.builtin.shell:
+    cmd: findmnt '/dev/shm' | tail -n1 | awk '{ print $4 }'
+  register: shm_options
+  failed_when: shm_options.rc > 1
+  changed_when: false
+
+- ansible.builtin.debug:
+    var: shm_options
+
+#- name: "Set fact for /dev/shm mount options"
+#  ansible.builtin.set_fact:
+#    shm_mount_options: "shm_options.stdout_lines"
+#- name: "Set correct mount options for /dev/shm"
+#  when: shm_options.stdout is not

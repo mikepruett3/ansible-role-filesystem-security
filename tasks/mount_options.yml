@@ -1,0 +1,11 @@
+- name: "Collect mount information about {{ mount }} mount"
+  ansible.builtin.shell:
+    cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $4 }'
+  register: mount_options
+  failed_when: mount_options.rc > 1
+  changed_when: false
+
+- name: "Set specified correct mount options for {{ mount }}"
+  ansible.builtin.debug:
+    var: mount_options
+  when: "{{ option }} not in mount_options.stdout"

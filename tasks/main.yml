@@ -39,12 +39,33 @@
       regexp: ^[\s]*usb-storage.*\b.*$
       line: "install usb-storage /bin/true"
 
+- name: "Check for 'nodev' mount option for /dev/shm mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/dev/shm"
+    option: "nodev"
+
 - name: "Check for 'noexec' mount option for /dev/shm mount"
   ansible.builtin.include_tasks:
     file: mount_options.yml
   vars:
     mount: "/dev/shm"
     option: "noexec"
+
+- name: "Check for 'nosuid' mount option for /dev/shm mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/dev/shm"
+    option: "nosuid"
+
+- name: "Check for 'nodev' mount option for /home mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/home"
+    option: "nodev"
 
 - name: "Check for 'nodev' mount option for /tmp mount"
   ansible.builtin.include_tasks:
@@ -65,4 +86,25 @@
     file: mount_options.yml
   vars:
     mount: "/tmp"
+    option: "nosuid"
+
+- name: "Check for 'nodev' mount option for /var/tmp mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/var/tmp"
+    option: "nodev"
+
+- name: "Check for 'noexec' mount option for /var/tmp mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/var/tmp"
+    option: "noexec"
+
+- name: "Check for 'nosuid' mount option for /var/tmp mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/var/tmp"
     option: "nosuid"

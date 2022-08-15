@@ -55,4 +55,4 @@
 - name: "Set correct mount options for /dev/shm"
   ansible.builtin.debug:
     var: shm_options
-  when: "'noexec' not in shm_options.stdout"
+  when: "'nodev' not in shm_options.stdout"

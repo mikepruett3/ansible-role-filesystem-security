@@ -1,20 +1,21 @@
 - name: "Collect source device information about {{ mount }} mount"
   ansible.builtin.shell:
-    cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $2 }'
+    cmd: findmnt -s -o SOURCE '{{ mount }}' | tail -n1'
   register: source
   failed_when: source.rc > 1
   changed_when: false
 
 - name: "Collect fstype information about {{ mount }} mount"
   ansible.builtin.shell:
-    cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $3 }'
+    #cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $3 }'
+    cmd: findmnt -s -o FSTYPE '{{ mount }}' | tail -n1'
   register: fstype
   failed_when: fstype.rc > 1
   changed_when: false
 
 - name: "Collect mount options information about {{ mount }} mount"
   ansible.builtin.shell:
-    cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $4 }'
+    cmd: findmnt -s -o OPTIONS '{{ mount }}' | tail -n1'
   register: mount_options
   failed_when: mount_options.rc > 1
   changed_when: false

@@ -44,6 +44,13 @@
     file: mount_options.yml
   vars:
     mount: "/dev/shm"
+    option: "rw"
+
+- name: "Check for 'nodev' mount option for /dev/shm mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/dev/shm"
     option: "nodev"
 
 - name: "Check for 'noexec' mount option for /dev/shm mount"

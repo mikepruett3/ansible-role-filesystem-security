@@ -5,7 +5,11 @@
   failed_when: mount_options.rc > 1
   changed_when: false
 
-- name: "Set specified correct mount options for {{ mount }}"
-  ansible.builtin.debug:
-    var: mount_options
+- name: "Add specified mount option {{ option }} to {{ mount }}"
+  ansible.posix.mount:
+    path: "{{ mount }}"
+    src: tempfs
+    fstype: tempfs
+    opts: "{{ mount_options.stdout }},{{ option }}"
+    state: present
   when: "option not in mount_options.stdout"

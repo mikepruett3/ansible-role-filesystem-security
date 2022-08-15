@@ -44,4 +44,4 @@
     file: mount_options.yml
   vars:
     mount: "/dev/shm"
-    option: "nodev"
+    option: "noexec"

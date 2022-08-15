@@ -32,6 +32,7 @@
 - name: "Remove beginning comma from mount_options var"
   ansible.builtin.set_fact:
     mount_options: "{{ mount_options | replace(',','',1) }}"
+  when: mount_options.startswith(',')
 
 - name: "Add specified mount option {{ option }} to {{ mount }}"
   ansible.posix.mount:

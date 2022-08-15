@@ -1,2 +1,41 @@
 ---
 # tasks file for ansible-role-filesystem-security
+
+#- name: "Include OS-specific variables"
+#  include_vars: "{{ ansible_os_family }}.yaml"
+
+#- name: "Gather the package facts"
+#  ansible.builtin.package_facts:
+#    manager: auto
+#  when: ansible_facts.packages is not defined
+
+- name: "Ensure filesystem kernel modules are disabled"
+  ansible.builtin.lineinfile:
+    path: "/etc/modprobe.d/{{ item.kernel_module }}.conf"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    create: yes
+  with_items:
+    - kernel_module: "cramfs"
+      regexp: ^[\s]*cramfs.*\b.*$
+      line: "install cramfs /bin/true"
+    - kernel_module: "freevxfs"
+      regexp: ^[\s]*freevxfs.*\b.*$
+      line: "install freevxfs /bin/true"
+    - kernel_module: "hfs"
+      regexp: ^[\s]*hfs.*\b.*$
+      line: "install hfs /bin/true"
+    - kernel_module: "hfsplus"
+      regexp: ^[\s]*hfsplus.*\b.*$
+      line: "install hfsplus /bin/true"
+    - kernel_module: "jffs2"
+      regexp: ^[\s]*jffs2.*\b.*$
+      line: "install jffs2 /bin/true"
+    - kernel_module: "udf"
+      regexp: ^[\s]*udf.*\b.*$
+      line: "install udf /bin/true"
+    - kernel_module: "usb-storage"
+      regexp: ^[\s]*usb-storage.*\b.*$
+      line: "install usb-storage /bin/true"
+

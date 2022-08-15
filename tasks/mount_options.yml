@@ -8,4 +8,4 @@
 - name: "Set specified correct mount options for {{ mount }}"
   ansible.builtin.debug:
     var: mount_options
-  when: "{{ option }} not in mount_options.stdout"
+  when: "option not in mount_options.stdout"

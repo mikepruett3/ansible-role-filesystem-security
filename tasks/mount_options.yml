@@ -20,10 +20,14 @@
   failed_when: mount_options.rc > 1
   changed_when: false
 
+- name: "Set mount_options fact"
+  ansible.builtin.set_fact:
+    mount_options: "{{ mount_options.stdout }}"
+
 - name: "Remove 'defaults' mount options from mount_options var"
   ansible.builtin.set_fact:
-    mount_options: "{{ mount_options.stdout | replace('defaults','') }}"
-  when: "'defaults' in mount_options.stdout"
+    mount_options: "{{ mount_options | replace('defaults','') }}"
+  when: "'defaults' in mount_options"
 
 - name: "Add specified mount option {{ option }} to {{ mount }}"
   ansible.posix.mount:

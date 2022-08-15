@@ -40,7 +40,8 @@
       line: "install usb-storage /bin/true"
 
 - name: "Check for 'nodev' mount option for /dev/shm mount"
-  ansible.builtin.import_tasks: mount_options.yml
-    vars:
-      mount: "/dev/shm"
-      option: "nodev"
+  ansible.builtin.include_tasks:
+    faile: mount_options.yml
+  vars:
+    mount: "/dev/shm"
+    option: "nodev"

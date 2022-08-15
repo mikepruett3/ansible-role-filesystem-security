@@ -25,11 +25,15 @@
     mount_options: "{{ mount_options.stdout | replace('defaults','') }}"
   when: "'defaults' in mount_options.stdout"
 
+- name: "Remove 'defaults' mount options from mount_options var"
+  ansible.builtin.set_fact:
+    mount_options: "{{ mount_options.stdout }}"
+
 - name: "Add specified mount option {{ option }} to {{ mount }}"
   ansible.posix.mount:
     path: "{{ mount }}"
     src: "{{ source.stdout }}"
     fstype: "{{ fstype.stdout }}"
-    opts: "{{ mount_options.stdout }},{{ option }}"
+    opts: "{{ mount_options }},{{ option }}"
     state: present
-  when: "option not in mount_options.stdout"
+  when: "option not in mount_options"

@@ -41,6 +41,6 @@
 
 - name: "Check for 'nodev' mount option for /dev/shm mount"
   ansible.builtin.import_tasks: mount_options.yml
-  include_vars:
+  vars:
     mount: "/dev/shm"
     option: "nodev"

@@ -1,4 +1,18 @@
-- name: "Collect mount information about {{ mount }} mount"
+- name: "Collect source device information about {{ mount }} mount"
+  ansible.builtin.shell:
+    cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $2 }'
+  register: source
+  failed_when: source.rc > 1
+  changed_when: false
+
+- name: "Collect fstype information about {{ mount }} mount"
+  ansible.builtin.shell:
+    cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $3 }'
+  register: fstype
+  failed_when: fstype.rc > 1
+  changed_when: false
+
+- name: "Collect mount options information about {{ mount }} mount"
   ansible.builtin.shell:
     cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $4 }'
   register: mount_options
@@ -8,8 +22,8 @@
 - name: "Add specified mount option {{ option }} to {{ mount }}"
   ansible.posix.mount:
     path: "{{ mount }}"
-    src: tempfs
-    fstype: tempfs
+    src: "{{ source.stdout }}"
+    fstype: "{{ fstype.stdout }}"
     opts: "{{ mount_options.stdout }},{{ option }}"
     state: present
   when: "option not in mount_options.stdout"

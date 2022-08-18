@@ -95,23 +95,21 @@
     mount: "/tmp"
     option: "nosuid"
 
-#- name: "Check for 'nodev' mount option for /var/tmp mount"
-#  ansible.builtin.include_tasks:
-#    file: mount_options.yml
-#  vars:
-#    mount: "/var/tmp"
-#    option: "nodev"
+- name: "Update MultiPath Daemon config to blacklist any VMWare Virtual Disks"
+  ansible.builtin.blockinfile:
+    path: "/etc/multipath.conf"
+    backup: yes
+    block: |
+      blacklist {
+        device {
+            vendor "VMware"
+            product "Virtual disk"
+        }
+      }
+  register: multipath
 
-#- name: "Check for 'noexec' mount option for /var/tmp mount"
-#  ansible.builtin.include_tasks:
-#    file: mount_options.yml
-#  vars:
-#    mount: "/var/tmp"
-#    option: "noexec"
-
-#- name: "Check for 'nosuid' mount option for /var/tmp mount"
-#  ansible.builtin.include_tasks:
-#    file: mount_options.yml
-#  vars:
-#    mount: "/var/tmp"
-#    option: "nosuid"
+- name: "Restart MultiPath Daemon Service"
+  ansible.builtin.service:
+    name: multipathd
+    state: restarted
+  when: multipath.changed

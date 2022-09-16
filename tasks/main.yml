@@ -102,6 +102,27 @@
     mount: "/tmp"
     option: "nosuid"
 
+- name: "Check for 'nodev' mount option for /var mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/var"
+    option: "nodev"
+
+- name: "Check for 'noexec' mount option for /var mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/var"
+    option: "noexec"
+
+- name: "Check for 'nosuid' mount option for /var mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/var"
+    option: "nosuid"
+
 - name: "Update MultiPath Daemon config to blacklist any VMWare Virtual Disks"
   ansible.builtin.blockinfile:
     path: "/etc/multipath.conf"

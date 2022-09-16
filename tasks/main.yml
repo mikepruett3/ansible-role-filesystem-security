@@ -39,12 +39,12 @@
       regexp: ^[\s]*usb-storage.*\b.*$
       line: "install usb-storage /bin/true"
 
-- name: "Check for 'rw' mount option for /boot/efi mount"
-  ansible.builtin.include_tasks:
-    file: mount_options.yml
-  vars:
-    mount: "/boot/efi"
-    option: "rw"
+#- name: "Check for 'rw' mount option for /boot/efi mount"
+#  ansible.builtin.include_tasks:
+#    file: mount_options.yml
+#  vars:
+#    mount: "/boot/efi"
+#    option: "rw"
 
 - name: "Check for 'nodev' mount option for /boot/efi mount"
   ansible.builtin.include_tasks:

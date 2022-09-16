@@ -35,7 +35,11 @@
 
 - name: "Set mount_options fact"
   ansible.builtin.set_fact:
+    source: "{{ source.stdout }}"
+    fstype: "{{ fstype.stdout }}"
     mount_options: "{{ mount_options.stdout }}"
+    backup_operation: "{{ backup_operation.stdout | trim }}"
+    check_order: "{{ check_order.stdout | trim }}"
 
 - name: "Remove 'defaults' mount options from mount_options var"
   ansible.builtin.set_fact:
@@ -50,8 +54,8 @@
 - name: "Add specified mount option {{ option }} to {{ mount }}, when mount_options is blank"
   ansible.posix.mount:
     path: "{{ mount }}"
-    src: "{{ source.stdout }}"
-    fstype: "{{ fstype.stdout }}"
+    src: "{{ source }}"
+    fstype: "{{ fstype }}"
     opts: "{{ option }}"
     dump: "{{ backup_operation }}"
     passno: "{{ check_order }}"
@@ -63,8 +67,8 @@
 - name: "Add specified mount option {{ option }} to {{ mount }}, when mount_options is not blank"
   ansible.posix.mount:
     path: "{{ mount }}"
-    src: "{{ source.stdout }}"
-    fstype: "{{ fstype.stdout }}"
+    src: "{{ source }}"
+    fstype: "{{ fstype }}"
     opts: "{{ mount_options }},{{ option }}"
     dump: "{{ backup_operation }}"
     passno: "{{ check_order }}"

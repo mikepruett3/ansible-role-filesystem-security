@@ -39,6 +39,6 @@
     path: "{{ mount }}"
     src: "{{ source.stdout }}"
     fstype: "{{ fstype.stdout }}"
-    opts: "{{ mount_options }},{{ option }}.lstrip(',')"
+    opts: "{{ mount_options }},{{ option }}"
     state: present
   when: "option not in mount_options"

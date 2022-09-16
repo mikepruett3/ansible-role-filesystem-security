@@ -35,8 +35,8 @@
 
 - name: "Set mount_options fact"
   ansible.builtin.set_fact:
-    source: "{{ source.stdout }}"
-    fstype: "{{ fstype.stdout }}"
+    source: "{{ source.stdout | trim }}"
+    fstype: "{{ fstype.stdout | trim }}"
     mount_options: "{{ mount_options.stdout }}"
     backup_operation: "{{ backup_operation.stdout | trim }}"
     check_order: "{{ check_order.stdout | trim }}"

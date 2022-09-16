@@ -31,7 +31,7 @@
 
 - name: "Remove beginning comma from mount_options var"
   ansible.builtin.set_fact:
-    mount_options: "{{ mount_options.lstrip(',') }}"
+    mount_options: "{{ mount_options | replace(',','',1) }}"
   when: mount_options.startswith(',')
 
 - name: "Add specified mount option {{ option }} to {{ mount }}"
@@ -39,6 +39,6 @@
     path: "{{ mount }}"
     src: "{{ source.stdout }}"
     fstype: "{{ fstype.stdout }}"
-    opts: "{{ mount_options }},{{ option }}"
+    opts: "{{ mount_options }},{{ option }} | lstrip(',')"
     state: present
   when: "option not in mount_options"

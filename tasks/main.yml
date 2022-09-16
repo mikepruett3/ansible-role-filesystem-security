@@ -74,6 +74,13 @@
     mount: "/home"
     option: "nodev"
 
+- name: "Check for 'nosuid' mount option for /home mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/home"
+    option: "nosuid"
+
 - name: "Check for 'nodev' mount option for /tmp mount"
   ansible.builtin.include_tasks:
     file: mount_options.yml

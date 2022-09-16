@@ -1,13 +1,12 @@
 - name: "Collect source device information about {{ mount }} mount"
   ansible.builtin.shell:
-    cmd: findmnt -o SOURCE '{{ mount }}' | tail -n1
+    cmd: findmnt -s -o SOURCE '{{ mount }}' | tail -n1
   register: source
   failed_when: source.rc > 1
   changed_when: false
 
 - name: "Collect fstype information about {{ mount }} mount"
   ansible.builtin.shell:
-    #cmd: findmnt '{{ mount }}' | tail -n1 | awk '{ print $3 }'
     cmd: findmnt -o FSTYPE '{{ mount }}' | tail -n1
   register: fstype
   failed_when: fstype.rc > 1
@@ -18,6 +17,20 @@
     cmd: findmnt -s -o OPTIONS '{{ mount }}' | tail -n1
   register: mount_options
   failed_when: mount_options.rc > 1
+  changed_when: false
+
+- name: "Collect backup operation information about {{ mount }} mount"
+  ansible.builtin.shell:
+    cmd: findmnt -s -o FREQ '{{ mount }}' | tail -n1
+  register: backup_operation
+  failed_when: backup_operation.rc > 1
+  changed_when: false
+
+- name: "Collect file system check order information about {{ mount }} mount"
+  ansible.builtin.shell:
+    cmd: findmnt -s -o PASSNO '{{ mount }}' | tail -n1
+  register: check_order
+  failed_when: check_order.rc > 1
   changed_when: false
 
 - name: "Set mount_options fact"
@@ -40,6 +53,8 @@
     src: "{{ source.stdout }}"
     fstype: "{{ fstype.stdout }}"
     opts: "{{ option }}"
+    dump: "{{ backup_operation }}"
+    passno: "{{ check_order }}"
     state: present
   when:
     - "option not in mount_options"
@@ -51,6 +66,8 @@
     src: "{{ source.stdout }}"
     fstype: "{{ fstype.stdout }}"
     opts: "{{ mount_options }},{{ option }}"
+    dump: "{{ backup_operation }}"
+    passno: "{{ check_order }}"
     state: present
   when:
     - "option not in mount_options"

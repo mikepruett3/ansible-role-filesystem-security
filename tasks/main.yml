@@ -123,6 +123,13 @@
     mount: "/var"
     option: "nosuid"
 
+- name: "Check for 'nodev' mount option for /var/log mount"
+  ansible.builtin.include_tasks:
+    file: mount_options.yml
+  vars:
+    mount: "/var/log"
+    option: "nodev"
+
 - name: "Update MultiPath Daemon config to blacklist any VMWare Virtual Disks"
   ansible.builtin.blockinfile:
     path: "/etc/multipath.conf"

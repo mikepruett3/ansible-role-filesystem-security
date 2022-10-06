@@ -45,6 +45,7 @@
   vars:
     mount: "/boot/efi"
     option: "nodev"
+  when: ansible_facts['distribution'] == 'Debian'
 
 - name: "Check for 'nodev' mount option for /dev/shm mount"
   ansible.builtin.include_tasks:
@@ -149,6 +150,7 @@
         }
       }
   register: multipath
+  when: ansible_facts['distribution'] == 'Debian'
 
 - name: "Restart MultiPath Daemon Service"
   ansible.builtin.service:

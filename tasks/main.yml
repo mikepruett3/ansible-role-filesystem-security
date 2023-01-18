@@ -96,6 +96,7 @@
   vars:
     mount: "/tmp"
     option: "noexec"
+  when: ansible_facts['os_family'] == 'RedHat'
 
 - name: "Check for 'nosuid' mount option for /tmp mount"
   ansible.builtin.include_tasks:
@@ -117,6 +118,7 @@
   vars:
     mount: "/var"
     option: "noexec"
+  when: ansible_facts['os_family'] == 'RedHat'
 
 - name: "Check for 'nosuid' mount option for /var mount"
   ansible.builtin.include_tasks:

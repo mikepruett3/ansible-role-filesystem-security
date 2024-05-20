@@ -11,53 +11,67 @@
 #  when: ansible_facts.packages is not defined
 
 - name: "Ensure filesystem kernel modules are disabled"
-  ansible.builtin.lineinfile:
-    path: "/etc/modprobe.d/{{ item.kernel_module }}.conf"
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    state: present
-    create: yes
+  ansible.builtin.template:
+    src: module.j2
+    dest: "/etc/modprobe.d/{{ item }}.conf"
   with_items:
-    - kernel_module: "cramfs"
-      regexp: ^[\s]*cramfs.*\b.*$
-      line: |
-        blacklist cramfs
-        install cramfs /bin/false
-    - kernel_module: "freevxfs"
-      regexp: ^[\s]*freevxfs.*\b.*$
-      line: |
-        blacklist freevxfs
-        install freevxfs /bin/false
-    - kernel_module: "hfs"
-      regexp: ^[\s]*hfs.*\b.*$
-      line: |
-        blacklist hfs
-        install hfs /bin/false
-    - kernel_module: "hfsplus"
-      regexp: ^[\s]*hfsplus.*\b.*$
-      line: |
-        blacklist hfsplus
-        install hfsplus /bin/false
-    - kernel_module: "jffs2"
-      regexp: ^[\s]*jffs2.*\b.*$
-      line: |
-        blacklist jffs2
-        install jffs2 /bin/false
-    - kernel_module: "squashfs"
-      regexp: ^[\s]*squashfs.*\b.*$
-      line: |
-        blacklist squashfs
-        install squashfs /bin/false
-    - kernel_module: "udf"
-      regexp: ^[\s]*udf.*\b.*$
-      line: |
-        blacklist udf
-        install udf /bin/false
-    - kernel_module: "usb-storage"
-      regexp: ^[\s]*usb-storage.*\b.*$
-      line: |
-        blacklist usb-storage
-        install usb-storage /bin/false
+    - cramfs
+    - freevxfs
+    - hfs
+    - hfsplus
+    - jffs2
+    - squashfs
+    - udf
+    - usb-storage
+
+#- name: "Ensure filesystem kernel modules are disabled"
+#  ansible.builtin.lineinfile:
+#    path: "/etc/modprobe.d/{{ item.kernel_module }}.conf"
+#    regexp: "{{ item.regexp }}"
+#    line: "{{ item.line }}"
+#    state: present
+#    create: yes
+#  with_items:
+#    - kernel_module: "cramfs"
+#      regexp: ^[\s]*cramfs.*\b.*$
+#      line: |
+#        blacklist cramfs
+#        install cramfs /bin/false
+#    - kernel_module: "freevxfs"
+#      regexp: ^[\s]*freevxfs.*\b.*$
+#      line: |
+#        blacklist freevxfs
+#        install freevxfs /bin/false
+#    - kernel_module: "hfs"
+#      regexp: ^[\s]*hfs.*\b.*$
+#      line: |
+#        blacklist hfs
+#        install hfs /bin/false
+#    - kernel_module: "hfsplus"
+#      regexp: ^[\s]*hfsplus.*\b.*$
+#      line: |
+#        blacklist hfsplus
+#        install hfsplus /bin/false
+#    - kernel_module: "jffs2"
+#      regexp: ^[\s]*jffs2.*\b.*$
+#      line: |
+#        blacklist jffs2
+#        install jffs2 /bin/false
+#    - kernel_module: "squashfs"
+#      regexp: ^[\s]*squashfs.*\b.*$
+#      line: |
+#        blacklist squashfs
+#        install squashfs /bin/false
+#    - kernel_module: "udf"
+#      regexp: ^[\s]*udf.*\b.*$
+#      line: |
+#        blacklist udf
+#        install udf /bin/false
+#    - kernel_module: "usb-storage"
+#      regexp: ^[\s]*usb-storage.*\b.*$
+#      line: |
+#        blacklist usb-storage
+#        install usb-storage /bin/false
 
 - name: "Check for 'nodev' mount option for /boot/efi mount"
   ansible.builtin.include_tasks:

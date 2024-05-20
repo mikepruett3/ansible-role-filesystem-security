@@ -1,6 +1,7 @@
 ---
 # tasks file for ansible-role-filesystem-security
 
+# From Red Hat - https://access.redhat.com/solutions/41278
 - name: "Ensure filesystem kernel modules are disabled"
   ansible.builtin.template:
     src: module.j2
